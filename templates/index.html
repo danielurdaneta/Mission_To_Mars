@@ -16,23 +16,23 @@
       <div class="jumbotron text-center">
         <h1>Mission to Mars</h1>
         <!-- Add a button to activate scraping script -->
-        <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a></p>
+        <p><a class="btn btn-success btn-lg" href="/scrape" role="button">Scrape New Data</a></p>
       </div>
       <!-- Add section for Mars News -->
       <div class="row" id="mars-news">
-        <div class="col-md-12">
+        <div class="col-md-12 col-xs-18">
           <div class="media">
             <div class="media-body">
               <h2>Latest Mars News</h2>
-              <h4 class="media-heading">{{ mars.news_title }}</h4>
-              <p>{{ mars.news_paragraph }}</p>
+              <h4 class="media-heading ">{{ mars.news_title }}</h4>
+              <p class="bg-success"> {{ mars.news_paragraph }}</p>
             </div>
           </div>
         </div>
       </div>
       <!-- Section for Featured Image and Facts table -->
       <div class="row" id="mars-featured-image">
-        <div class="col-md-8">
+        <div class="col-md-8 col-xs-18">
           <h2>Featured Mars Image</h2>
           <img
             src="{{mars.featured_image }}"
@@ -40,11 +40,36 @@
             alt="Responsive image"
           />
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 col-xs-12">
           <!-- Mars Facts -->
           <div class="row" id="mars-facts">
             <h4>Mars Facts</h4>
+            <table class = "table table-hover">
             {{ mars.facts | safe }}
+            </table>
+          </div>
+        </div>
+      </div>
+          <!-- Hemisphere title and images -->
+      <div class="container-fluid">
+        <div class="row" id="mars-title-img">
+          <div class="col-md-12 col-xs-18">
+            <div class="media">
+              <h2>Mars Hemispheres</h2>
+              <div class="media-body">
+                {% for hemisphere in mars.mars_title_img %}
+                <div class="col-md-3 col-xs-6">
+                  <h4>{{ hemisphere.title }}</h4>
+                  <img
+                  src="{{hemisphere.image}}"
+                  class="img-thumbnail"
+                  alt="Responsive image"
+                  
+                  />
+                </div>
+                {% endfor %}
+              </div>
+            </div>
           </div>
         </div>
       </div>

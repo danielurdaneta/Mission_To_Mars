@@ -19,7 +19,8 @@ def scrape_all():
         "news_paragraph": news_paragraph,
         "featured_image": featured_image(browser),
         "facts": mars_facts(),
-        "last_modified": dt.datetime.now()
+        "last_modified": dt.datetime.now(),
+        "mars_title_img": mars_title_img(browser)
     }
 
     # Stop webdriver and return data
@@ -101,3 +102,49 @@ if __name__ == "__main__":
 
     # If running as script, print scraped data
     print(scrape_all())
+
+def mars_title_img(browser):
+
+    url = 'https://marshemispheres.com/'
+    browser.visit(url)
+    html = browser.html
+    news_soup = soup(html, 'html.parser')
+    results = news_soup.select_one('div.description')
+
+    #Get list of each article
+    results = news_soup.find_all('div', class_ = 'description')
+
+    #Create hemipshere diccionary and hemisphere list
+    hemisphere = {}
+    hemisphere_list = []
+
+    #Loop trough each article
+    for result in results:
+        
+        #Reset hemipshere dicctionary 
+        hemisphere = {}
+        
+        #Get full image link
+        link = result.a['href']
+        img_link = f'{url}{link}'
+        
+        #Visit full image link
+        browser.visit(img_link)
+        
+        #Parse this new page
+        html = browser.html
+        mars_soup = soup(html, 'html.parser')
+        
+        #Get article title and image
+        mars_title = mars_soup.find('h2', class_='title').get_text()
+        mars_img = mars_soup.find('div', class_='downloads').a['href']
+        mars_img_link = f'{url}{mars_img}'
+        
+        #Add articule's title and image to a dictionary and append it in a list 
+        hemisphere['title'] = mars_title
+        hemisphere['image'] = mars_img_link
+        dictionary_copy = hemisphere.copy()
+        hemisphere_list.append(dictionary_copy)
+
+    return hemisphere_list
+        
